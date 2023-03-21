@@ -4,7 +4,9 @@ VMware Tanzu Kubernetes Grid (TKG) provides a consistent, upstream-compatible, r
 
 An air-gap installation method is used when the Tanzu Kubernetes Grid bootstrapper and cluster nodes components are unable to connect to the Internet to download the installation binaries from the public [VMware Registry](https://projects.registry.vmware.com/) during Tanzu Kubernetes Grid installation or upgrades. 
 
-The scope of this document is limited to providing Prerequisites and deployment of Bastion Host and bootstrap machine
+The scope of this document is limited to providing Prerequisites and deployment of Online Host and bootstrap machine
+
+**Important:** we can refer same deployment guides of Tanzu for Kubernetes Operations based on the environemnt , in Airgap the change is going to be setting up Online Host, Private Repository and updating the Managment cluster config file with reposiroty details. 
 
 ## Supported Component Matrix
 
@@ -22,7 +24,7 @@ The following table provides the component versions and interoperability matrix 
 ### Prerequisites
 
 1. Harbor Image Registry
-2. Configure Bastion Host
+2. Configure Online Host
 3. Bootstrap VM
 
 ## <a id=install-harbor> </a> Install Harbor Image Registry
@@ -38,7 +40,7 @@ To install Harbor, deploy an operating system of your choice with the following 
 Copy the Harbor binary from the bootstrap VM to the Harbor VM. Follow the instructions provided in [Harbor Installation and Configuration](https://goharbor.io/docs/2.3.0/install-config/) to deploy and configure Harbor.
 
 
-### Configure Online Host
+## <a id=install-harbor> </a> Configure Online Host
 
 Online host is a Virtual/Physical Machine which we use to download files from VMware repository for TKG Installation
 
@@ -253,8 +255,9 @@ To install Tanzu CLI, Tanzu Plugins, and Kubectl utility on the bootstrap machin
 
 1. Execute the following commands to install Tanzu Kubernetes Grid CLI, kubectl CLIs, and Carvel tools.
     ```bash
-    ## Install required packages
-    tdnf install tar zip unzip wget -y
+    ## Install required packages , Ignore if the pakages is already installed.
+    
+     tar, zip, unzip & wget
 
     ## Install Tanzu Kubernetes Grid CLI
     tar -xvf tanzu-cli-bundle-linux-amd64.tar.gz
@@ -290,7 +293,7 @@ To install Tanzu CLI, Tanzu Plugins, and Kubectl utility on the bootstrap machin
 
     export TKG_CUSTOM_IMAGE_REPOSITORY_SKIP_TLS_VERIFY=false
 
-    export env.TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE=LS0t[...]tLS0tLQ==
+    export TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE=LS0t[...]tLS0tLQ==
 
     If your image registry is configured with a public signed CA certificate, set the following environment variables.
 
@@ -373,7 +376,7 @@ To install Tanzu CLI, Tanzu Plugins, and Kubectl utility on the bootstrap machin
 1. Install `yq`. `yq` is a lightweight and portable command-line YAML processor. `yq` uses `jq`-like syntax but works with YAML and JSON files.
 
     ```bash
-    wget https://github.com/mikefarah/yq/releases/download/v4.24.5/yq_linux_amd64.tar.gz
+    DownloadLink:- https://github.com/mikefarah/yq/releases/download/v4.24.5/yq_linux_amd64.tar.gz
 
     tar -xvf yq_linux_amd64.tar.gz && mv yq_linux_amd64 /usr/local/bin/yq
     ```
@@ -436,9 +439,10 @@ All required packages are now installed and the required configurations are in p
 
 ### Management Cluster Configuration Template
 
-The templates include all of the options that are relevant to deploying management clusters on vSphere. You can copy this template and use it to deploy management clusters to vSphere.
+We can use the tradital way of creating templates for management cluster,once the template is created we manually need to add  include Image repository configuration to the configuration file.<p>Sample config file is given below.
 
-**Important:** The environment variables that you have set, override values from a cluster configuration file. To use all settings from a cluster configuration file, remove any conflicting environment variables before you deploy the management cluster from the CLI.
+**Important:** Image repository configuration is very importat details which will not be part of default config file when we are creating from TKG UI.<p>
+
 
 ```yaml
 #! ---------------------------------------------------------------------
@@ -525,7 +529,7 @@ AVI_USERNAME:
 
 TKG_CUSTOM_IMAGE_REPOSITORY: ""
 TKG_CUSTOM_IMAGE_REPOSITORY_SKIP_TLS_VERIFY: false
-TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE: ""
+TKG_CUSTOM_IMAGE_REPOSITORY_CA_CERTIFICATE: "base"
 
 #! ---------------------------------------------------------------------
 #! Machine Health Check configuration
