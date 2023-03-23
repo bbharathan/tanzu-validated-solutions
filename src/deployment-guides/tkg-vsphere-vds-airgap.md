@@ -4,7 +4,7 @@ VMware Tanzu Kubernetes Grid (TKG) provides a consistent, upstream-compatible, r
 
 An air-gap installation method is used when the Tanzu Kubernetes Grid bootstrapper and cluster nodes components are unable to connect to the Internet to download the installation binaries from the public [VMware Registry](https://projects.registry.vmware.com/) during Tanzu Kubernetes Grid installation or upgrades. 
 
-The scope of this document is limited to providing Prerequisites and deployment of Online Host and bootstrap machine
+The scope of this document is limited to providing Prerequisites and deployment of Online Host and bootstrap machine , Setting up Workload clusters using yaml , and pakage installation.
 
 **Important:** we can refer same deployment guides of Tanzu for Kubernetes Operations based on the environemnt , in Airgap the change is going to be setting up Online Host, Private Repository and updating the Managment cluster config file with reposiroty details. 
 
@@ -1294,7 +1294,7 @@ Follow this procedure to deploy Harbor into a workload cluster or a shared servi
     ```bash
     # kubectl create namespace tanzu-system-registry
     # kubectl create namespace tanzu-harbor-registry
-    # tanzu package install harbor --package harbor.tanzu.vmware.com --version 2.6.3+vmware.1-tkg.1 --values-file harbor-data-values.yaml --namespace tanzu-harbor-registry
+    # tanzu package install harbor --package-name harbor.tanzu.vmware.com --version 2.6.3+vmware.1-tkg.1 --values-file harbor-data-values.yaml --namespace tanzu-harbor-registry
 
     8:04:52AM: Deploy succeeded
     ```
@@ -1366,7 +1366,7 @@ Do the following to deploy Prometheus into a workload cluster:
     ```bash
     # kubectl create namespace tanzu-system-monitoring
     # kubectl create namespace tanzu-prometheus-monitoring
-    # tanzu package install prometheus --package prometheus.tanzu.vmware.com --version 2.37.0+vmware.1-tkg.1--values-file prometheus-data-values.yaml --namespace tanzu-prometheus-monitoring
+    # tanzu package install prometheus --package-name prometheus.tanzu.vmware.com --version 2.37.0+vmware.1-tkg.1--values-file prometheus-data-values.yaml --namespace tanzu-prometheus-monitoring
 
     8:04:52AM: Deploy succeeded
     ```
@@ -1524,7 +1524,7 @@ The example shown in this document uses HTTP endpoint `vRealize Log Insight` for
     # tanzu package available list fluent-bit.tanzu.vmware.com -n tkg-system
     # kubectl create namespace tanzu-system-logging
     # kubectl create namespace tanzu-fluent-bit-logging
-    # tanzu package install fluent-bit --package fluent-bit.tanzu.vmware.com --version 1.9.5+vmware.1-tkg.1  --values-file grafana-data-values.yaml --namespace tanzu-fluent-bit-logging
+    # tanzu package install fluent-bit --package-name fluent-bit.tanzu.vmware.com --version 1.9.5+vmware.1-tkg.1  --values-file fluentbit-data-values.yaml --namespace tanzu-fluent-bit-logging
 
     'PackageInstall' resource install status: Reconciling
     'PackageInstall' resource install status: ReconcileSucceeded
@@ -1539,7 +1539,7 @@ The example shown in this document uses HTTP endpoint `vRealize Log Insight` for
 
     NAME:                    fluent-bit
     PACKAGE-NAME:            fluent-bit.tanzu.vmware.com
-    PACKAGE-VERSION:         1.8.15+vmware.1-tkg.1
+    PACKAGE-VERSION:         1.9.5+vmware.1-tkg.1
     STATUS:                  Reconcile succeeded
     CONDITIONS:              [{ReconcileSucceeded True  }]
     USEFUL-ERROR-MESSAGE:
