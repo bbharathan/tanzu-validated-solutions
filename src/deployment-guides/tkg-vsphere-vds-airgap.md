@@ -4,9 +4,10 @@ VMware Tanzu Kubernetes Grid (TKG) provides a consistent, upstream-compatible, r
 
 An air-gap installation method is used when the Tanzu Kubernetes Grid bootstrapper and cluster nodes components are unable to connect to the Internet to download the installation binaries from the public [VMware Registry](https://projects.registry.vmware.com/) during Tanzu Kubernetes Grid installation or upgrades. 
 
-The scope of this document is limited to providing Prerequisites and deployment of Online Host and bootstrap machine , Setting up Workload clusters using yaml , and pakage installation.
+The scope of this document is limited to providing Prerequisites and deployment of Online Host, bootstrap machine, Setting up Workload clusters using yaml, and pakage installation in VMware VDS infrastructure.
 
-**Important:** we can refer same deployment guides of Tanzu for Kubernetes Operations based on the environemnt , in Airgap the change is going to be setting up Online Host, Private Repository and updating the Managment cluster config file with reposiroty details. 
+**Important:**
+In Airgap Environment the configuration change is going to be setting up Online Host, Private Repository and updating the Managment cluster/Workload Cluster config file with reposiroty details. 
 
 ## Supported Component Matrix
 
@@ -19,13 +20,21 @@ The following table provides the component versions and interoperability matrix 
 |VMware vCenter Server|7.0 U3 |
 |NSX Advanced Load Balancer|22.1.2|
 
+## <a id=install-harbor> </a> Prerequisites 
 
+[Refer Deploy Tanzu for Kubernetes Operations on vSphere](LINK)
+1. Deploy and Configure VMware infrastructure Dependencies 
+2. Deploy and Configure NSX Advanced Load Balancer
+3. Image Registry Server
 
-### Prerequisites
+## <a id=install-harbor> </a> Tanzu for Kubernetes Operations Deployment Overview
 
-1. Harbor Image Registry
-2. Configure Online Host
-3. Bootstrap VM
+1. Deploy and Configure Online Host
+2. Deploy and Configure Bootstrap VM
+3. Deploy Tanzu Kubernetes Grid Management Cluster using yaml file
+4. Deploy Tanzu Kubernetes Grid Shared Services Cluster using yaml file
+5. Deploy Tanzu Kubernetes Grid Workload Clusters using yaml file
+6. Deploy User-Managed Packages
 
 ## <a id=install-harbor> </a> Install Harbor Image Registry
 
@@ -45,7 +54,6 @@ Copy the Harbor binary from the bootstrap VM to the Harbor VM. Follow the instru
 Online host is a Virtual/Physical Machine which we use to download files from VMware repository for TKG Installation
 
 ### Prerequisites
-
 
    * A minimum of 6 GB of RAM , 2-core CPU , 160GB Disk.
    * System time is synchronized with a Network Time Protocol (NTP) server.
@@ -700,7 +708,7 @@ Switched to context "tkg160-mgmt-airgap-admin@tkg160-mgmt-airgap".
 
 The Tanzu Kubernetes Grid management cluster is successfully deployed. You can now proceed with configuring custom ADCs and creating shared services & workload clusters.
 ## <a id="workloadalb"> </a> Configure AKO Deployment Config (ADC) for Workload Clusters
-Tanzu Kubernetes Grid v1.6.x management clusters with NSX Advanced Load Balancer are deployed with 2 AKODeploymentConfigs.
+Tanzu Kubernetes Grid v2.1.0 management clusters with NSX Advanced Load Balancer are deployed with 2 AKODeploymentConfigs.
 
 * `install-ako-for-management-cluster`: default configuration for management cluster
 * `install-ako-for-all`:  default configuration for all workload clusters. By default, all the workload clusters reference this file for their virtual IP networks and service engine (SE) groups. This ADC configuration does not enable NSX L7 Ingress by default.
